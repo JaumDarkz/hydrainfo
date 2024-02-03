@@ -25,7 +25,7 @@ export default authMiddleware({
 
     if (customSubDomain) {
       return NextResponse.rewrite(
-        new URL(`/${customSubDomain}${pathWithSearchParams}`, req.url),
+        new URL(`/${customSubDomain}${pathWithSearchParams}`, req.url)
       )
     }
 

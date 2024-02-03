@@ -10,6 +10,7 @@ import {
 } from '@prisma/client'
 import {
   getAuthUserDetails,
+  getUserPermissions,
 } from './queries'
 import { db } from './db'
 import { z } from 'zod'
@@ -30,6 +31,10 @@ export type NotificationWithUser =
       }
     } & Notification)[]
   | undefined
+
+export type UserWithPermissionsAndSubAccounts = Prisma.PromiseReturnType<
+  typeof getUserPermissions
+>
 
 export const FunnelPageSchema = z.object({
   name: z.string().min(1),
@@ -55,7 +60,6 @@ export type UsersWithAgencySubAccountPermissionsSidebarOptions =
   Prisma.PromiseReturnType<
     typeof __getUsersWithAgencySubAccountPermissionsSidebarOptions
   >
-
 
 export type CreateMediaType = Prisma.MediaCreateWithoutSubaccountInput
 

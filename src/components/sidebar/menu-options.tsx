@@ -63,7 +63,6 @@ const MenuOptions = ({
 
   if (!isMounted) return
 
-
   return (
     <Sheet
       modal={false}
@@ -181,31 +180,10 @@ const MenuOptions = ({
                       </CommandGroup>
                     )}
                   <CommandGroup heading="Accounts">
-                    {!!subAccounts ? (
-                      subAccounts.map((subaccount) => (
-                        <CommandItem key={subaccount.id}>
-                          {defaultOpen ? (
-                            <Link
-                              href={`/subaccount/${subaccount.id}`}
-                              className="flex gap-4 w-full h-full"
-                            >
-                              <div className="relative w-16">
-                                <Image
-                                  src={subaccount.subAccountLogo}
-                                  alt="subaccount Logo"
-                                  fill
-                                  className="rounded-md object-contain"
-                                />
-                              </div>
-                              <div className="flex flex-col flex-1">
-                                {subaccount.name}
-                                <span className="text-muted-foreground">
-                                  {subaccount.address}
-                                </span>
-                              </div>
-                            </Link>
-                          ) : (
-                            <SheetClose asChild>
+                    {!!subAccounts
+                      ? subAccounts.map((subaccount) => (
+                          <CommandItem key={subaccount.id}>
+                            {defaultOpen ? (
                               <Link
                                 href={`/subaccount/${subaccount.id}`}
                                 className="flex gap-4 w-full h-full"
@@ -225,13 +203,32 @@ const MenuOptions = ({
                                   </span>
                                 </div>
                               </Link>
-                            </SheetClose>
-                          )}
-                        </CommandItem>
-                      ))
-                    ) : (
-                      'No Accounts'
-                    )}
+                            ) : (
+                              <SheetClose asChild>
+                                <Link
+                                  href={`/subaccount/${subaccount.id}`}
+                                  className="flex gap-4 w-full h-full"
+                                >
+                                  <div className="relative w-16">
+                                    <Image
+                                      src={subaccount.subAccountLogo}
+                                      alt="subaccount Logo"
+                                      fill
+                                      className="rounded-md object-contain"
+                                    />
+                                  </div>
+                                  <div className="flex flex-col flex-1">
+                                    {subaccount.name}
+                                    <span className="text-muted-foreground">
+                                      {subaccount.address}
+                                    </span>
+                                  </div>
+                                </Link>
+                              </SheetClose>
+                            )}
+                          </CommandItem>
+                        ))
+                      : 'No Accounts'}
                   </CommandGroup>
                 </CommandList>
                 {(user?.role === 'AGENCY_OWNER' ||
@@ -262,23 +259,31 @@ const MenuOptions = ({
               </Command>
             </PopoverContent>
           </Popover>
-          <p className='text-muted-foreground text-xs mb-2'>MENU LINKS</p>
-          <Separator className='mb-4' />
-          <nav className='relatice'>
-            <Command className='rounded-lg overflow-visible bg-transparent'>
-              <CommandInput placeholder='Search...' />
-              <CommandList className='pb-16 overflow-visible'>
+          <p className="text-muted-foreground text-xs mb-2">MENU LINKS</p>
+          <Separator className="mb-4" />
+          <nav className="relative">
+            <Command className="rounded-lg overflow-visible bg-transparent">
+              <CommandInput placeholder="Search..." />
+              <CommandList className="py-4 overflow-visible">
                 <CommandEmpty>No Results Found</CommandEmpty>
-                <CommandGroup className='overflow-visible'>
+                <CommandGroup className="overflow-visible">
                   {sidebarOpt.map((sidebarOptions) => {
                     let val
-                    const result = icons.find((icon) => icon.value === sidebarOptions.icon)
+                    const result = icons.find(
+                      (icon) => icon.value === sidebarOptions.icon
+                    )
                     if (result) {
                       val = <result.path />
                     }
                     return (
-                      <CommandItem key={sidebarOptions.id} className='md:w-[320px] w-full'>
-                        <Link href={sidebarOptions.id} className='flex items-center gap-2 hover:bg-transparent rounded-md transition-all md:w-full w-[320px]'>
+                      <CommandItem
+                        key={sidebarOptions.id}
+                        className="md:w-[320px] w-full"
+                      >
+                        <Link
+                          href={sidebarOptions.link}
+                          className="flex items-center gap-2 hover:bg-transparent rounded-md transition-all md:w-full w-[320px]"
+                        >
                           {val}
                           <span>{sidebarOptions.name}</span>
                         </Link>

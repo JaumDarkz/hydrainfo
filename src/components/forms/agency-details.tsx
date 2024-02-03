@@ -186,8 +186,7 @@ const AgencyDetails = ({ data }: Props) => {
         <CardHeader>
           <CardTitle>Agency Information</CardTitle>
           <CardDescription>
-            Lets create an agency for you business. You can edit agency settings
-            later from the agency settings tab.
+            You can edit agency settings later from the agency settings tab.
           </CardDescription>
         </CardHeader>
         <CardContent>
