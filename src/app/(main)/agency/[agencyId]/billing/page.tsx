@@ -1,4 +1,4 @@
-const Page = () => {
+const BillingPage = () => {
   return (
     <div className=''>
       Page
@@ -6,4 +6,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default BillingPage

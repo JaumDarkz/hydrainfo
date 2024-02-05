@@ -240,7 +240,7 @@ const MenuOptions = ({
                         setOpen(
                           <CustomModal
                             title="Create A Subaccount"
-                            subheading="You can switch between your agency account and the subaccount from the sidebar"
+                            subheading=""
                           >
                             <SubAccountDetails
                               agencyDetails={user?.Agency as Agency}
@@ -259,7 +259,7 @@ const MenuOptions = ({
               </Command>
             </PopoverContent>
           </Popover>
-          <p className="text-muted-foreground text-xs mb-2">MENU LINKS</p>
+          <p className="text-muted-foreground text-xs mb-2"></p>
           <Separator className="mb-4" />
           <nav className="relative">
             <Command className="rounded-lg overflow-visible bg-transparent">

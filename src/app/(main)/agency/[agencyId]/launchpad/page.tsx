@@ -18,7 +18,7 @@ type Props = {
   searchParams: { code: string }
 }
 
-const LaunchPadPage = async ({params}: Props) => {
+const LaunchpadPage = async ({params}: Props) => {
   const agencyDetails = await db.agency.findUnique({
     where: { id: params.agencyId }
   })
@@ -102,4 +102,4 @@ const LaunchPadPage = async ({params}: Props) => {
   )
 }
 
-export default LaunchPadPage
+export default LaunchpadPage

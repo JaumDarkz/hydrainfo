@@ -60,9 +60,7 @@ export const saveActivityLogsNotification = async ({
     }
   } else {
     userData = await db.user.findUnique({
-      where: {
-        email: authUser?.emailAddresses[0].emailAddress,
-      },
+      where: { email: authUser?.emailAddresses[0].emailAddress },
     })
   }
 
@@ -75,7 +73,7 @@ export const saveActivityLogsNotification = async ({
   if (!foundAgencyId) {
     if (!subAccountId) {
       throw new Error(
-        'You need to provide atleast an agency Id or subaccount Id',
+        'You need to provide atleast an agency Id or subaccount Id'
       )
     }
     const response = await db.subAccount.findUnique({
@@ -89,7 +87,7 @@ export const saveActivityLogsNotification = async ({
         notification: `${userData.name} | ${description}`,
         User: {
           connect: {
-            id: foundAgencyId,
+            id: userData.id,
           },
         },
         Agency: {
@@ -98,9 +96,7 @@ export const saveActivityLogsNotification = async ({
           },
         },
         SubAccount: {
-          connect: {
-            id: subAccountId,
-          },
+          connect: { id: subAccountId },
         },
       },
     })
@@ -410,4 +406,22 @@ export const changeUserPermissions = async (
   } catch (error) {
     console.log('🔴Could not change persmission', error)
   }
+}
+
+export const getSubaccountDetails = async (subaccountId: string) => {
+  const response = await db.subAccount.findUnique({
+    where: {
+      id: subaccountId,
+    },
+  })
+  return response
+}
+
+export const deleteSubAccount = async (subaccountId: string) => {
+  const response = await db.subAccount.delete({
+    where: {
+      id: subaccountId,
+    },
+  })
+  return response
 }

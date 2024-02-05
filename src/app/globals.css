@@ -20,73 +20,80 @@ B (255 */
 
 @layer base {
   :root {
-    --background: 216 100% 98.04%;
-    --foreground: 213.6 100% 4.9%;
+     /* Name: custom color palette
+       Author: Ilias Ism
+       URL: https://gradient.page */
 
-    --primary: 214.12 100% 50%;
-    --primary-foreground: 0 0% 100%;
+    /* CSS: .bg-gradient { background: var(--gradient) } */
+    --gradient: linear-gradient(to top left,#004680,#4484BA);
+    --background: 220 60% 66%;
+    --foreground: 220 10% 1%;
 
-    --card: 216 100% 98.04%;
-    --card-foreground: 213.6 100% 4.9%;
+    --muted: 220 10% 92.5%;
+    --muted-foreground: 220 5% 42.5%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 213.6 100% 4.9%;
+    --popover: 220 90% 79%;
+    --popover-foreground: 220 10% 1.25%;
 
-    --secondary: 214.74 100% 92.55%;
-    --secondary-foreground: 216 100% 0.98%;
+    --card: 220 90% 79%;
+    --card-foreground: 220 10% 1.25%;
 
-    --muted: 213.6 100% 95.1%;
-    --muted-foreground: 0 0% 40%;
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
 
-    --accent: 213.6 100% 95.1%;
-    --accent-foreground: 214.12 100% 50%;
+    --primary: 220 100% 25%;
+    --primary-foreground: 220 2% 92.5%;
+
+    --secondary: 220 7% 100%;
+    --secondary-foreground: 220 7% 12.5%;
+
+    --accent: 220 7% 100%;
+    --accent-foreground: 220 7% 12.5%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 90.2%;
-    --input: 0 0% 90.2%;
-    --ring: 214.12 100% 50%;
+    --ring: 220 100% 25%;
 
     --radius: 0.5rem;
   }
 
   .dark {
     /* Name: custom color palette
-       Author: Ilias Ism
-       URL: https://gradient.page */
+        Author: Ilias Ism
+        URL: https://gradient.page */
 
     /* CSS: .bg-gradient { background: var(--gradient) } */
-    --gradient: linear-gradient(to top left, #007adf, #00ecbc);
+    --gradient: linear-gradient(to top left,#9CECFB,#65C7F7,#0052D4);
 
-    --background: 220 65% 3.52%;
-    --foreground: 220 10% 97.2%;
+    --background: 201 59.800000000000004% 6.4%;
+    --foreground: 201 9.200000000000001% 99%;
 
-    --muted: 220 50% 13.2%;
-    --muted-foreground: 220 10% 54.4%;
+    --muted: 201 46% 24%;
+    --muted-foreground: 201 9.200000000000001% 58%;
 
-    --popover: 220 45% 5.72%;
-    --popover-foreground: 220 10% 97.2%;
+    --popover: 201 46.599999999999994% 10.4%;
+    --popover-foreground: 201 9.200000000000001% 99%;
 
-    --card: 220 45% 5.72%;
-    --card-foreground: 220 10% 97.2%;
+    --card: 201 46.599999999999994% 10.4%;
+    --card-foreground: 201 9.200000000000001% 99%;
 
-    --border: 220 50% 13.2%;
-    --input: 220 50% 13.2%;
+    --border: 201 46% 24%;
+    --input: 201 46% 24%;
 
-    --primary: 220 100% 44%;
-    --primary-foreground: 220 10% 97.2%;
+    --primary: 201 92% 80%;
+    --primary-foreground: 201 9.200000000000001% 8%;
 
-    --secondary: 220 50% 13.2%;
-    --secondary-foreground: 220 10% 97.2%;
+    --secondary: 201 46% 24%;
+    --secondary-foreground: 201 9.200000000000001% 99%;
 
-    --accent: 220 50% 13.2%;
-    --accent-foreground: 220 10% 97.2%;
+    --accent: 201 46% 24%;
+    --accent-foreground: 201 9.200000000000001% 99%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 220 10% 97.2%;
+    --destructive-foreground: 201 9.200000000000001% 99%;
 
-    --ring: 220 100% 44%;
+    --ring: 201 92% 80%;
   }
 }
 
@@ -118,4 +125,18 @@ B (255 */
     opacity: 1;
     transform: scale(1);
   }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(0, 0%, 0%); /* Cor do polegar (parte arrastável) */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--background); /* Cor do fundo da barra de rolagem */
 }

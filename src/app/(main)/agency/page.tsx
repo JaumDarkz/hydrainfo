@@ -41,8 +41,8 @@ const Page = async ({
 
   const authUser = await currentUser()
   return (
-    <div className="flex justify-center items-center mt-4">
-      <div className="max-w-[850px] border-[1px] p-4 rounded-xl">
+    <div className="flex justify-center items-center p-12">
+      <div className="max-w-[850px] border-[1px] p-6 rounded-xl">
         <h1 className="text-4xl mb-5">Create An Agency</h1>
 
         <AgencyDetails
