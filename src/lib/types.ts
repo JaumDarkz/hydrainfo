@@ -10,6 +10,7 @@ import {
 } from '@prisma/client'
 import {
   getAuthUserDetails,
+  getMedia,
   getUserPermissions,
 } from './queries'
 import { db } from './db'
@@ -126,3 +127,5 @@ export type StripeCustomerType = {
 export type PricesList = Stripe.ApiList<Stripe.Price>
 
 export type UpsertFunnelPage = Prisma.FunnelPageCreateWithoutFunnelInput
+
+export type GetMediaFiles = Prisma.PromiseReturnType<typeof getMedia>

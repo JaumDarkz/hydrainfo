@@ -167,7 +167,7 @@ const UserDetails = ({ id, type, subAccounts, userData }: Props) => {
       toast({
         variant: 'destructive',
         title: 'Failed',
-        description: 'Could not update permissions',
+        description: 'Could not update permissions.',
       })
     }
     router.refresh()
@@ -193,7 +193,7 @@ const UserDetails = ({ id, type, subAccounts, userData }: Props) => {
       if (updatedUser) {
         toast({
           title: 'Success',
-          description: 'Update User Information',
+          description: 'Update User Information.',
         })
         setClose()
         router.refresh()
@@ -201,11 +201,11 @@ const UserDetails = ({ id, type, subAccounts, userData }: Props) => {
         toast({
           variant: 'destructive',
           title: 'Oppse!',
-          description: 'Could not update user information',
+          description: 'Could not update user information.',
         })
       }
     } else {
-      console.log('Error could not submit')
+      console.log('Error could not submit.')
     }
   }
 
@@ -213,7 +213,7 @@ const UserDetails = ({ id, type, subAccounts, userData }: Props) => {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>User Details</CardTitle>
-        <CardDescription>Add or update your information here.</CardDescription>
+        <CardDescription>Add or update your information.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -227,7 +227,7 @@ const UserDetails = ({ id, type, subAccounts, userData }: Props) => {
               name="avatarUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Profile picture</FormLabel>
+                  <FormLabel>Profile Picture</FormLabel>
                   <FormControl>
                     <FileUpload
                       apiEndpoint="avatar"
@@ -294,7 +294,7 @@ const UserDetails = ({ id, type, subAccounts, userData }: Props) => {
                         value === 'SUBACCOUNT_GUEST'
                       ) {
                         setRoleState(
-                          'You need to have subaccounts to assign Subaccount access to team members.'
+                          'You need to have Sub Accounts to assign Sub Account access to team members.'
                         )
                       } else {
                         setRoleState('')

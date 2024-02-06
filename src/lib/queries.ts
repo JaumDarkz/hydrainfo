@@ -3,9 +3,10 @@
 import { clerkClient, currentUser } from '@clerk/nextjs'
 import { db } from './db'
 import { redirect } from 'next/navigation'
-import { Agency, Plan, SubAccount, User } from '@prisma/client'
+import { Agency, Plan, Role, SubAccount, User } from '@prisma/client'
 import { userAgent } from 'next/server'
 import { v4 } from 'uuid'
+import { CreateMediaType } from './types'
 
 export const getAuthUserDetails = async () => {
   const user = await currentUser()
@@ -129,7 +130,10 @@ export const verifyAndAcceptInvitation = async () => {
   const user = await currentUser()
   if (!user) return redirect('/sign-in')
   const invitationExists = await db.invitation.findUnique({
-    where: { email: user.emailAddresses[0].emailAddress, status: 'PENDING' },
+    where: {
+      email: user.emailAddresses[0].emailAddress,
+      status: 'PENDING',
+    },
   })
 
   if (invitationExists) {
@@ -138,12 +142,11 @@ export const verifyAndAcceptInvitation = async () => {
       agencyId: invitationExists.agencyId,
       avatarUrl: user.imageUrl,
       id: user.id,
-      name: `${user.firstName} {${user.lastName}}`,
+      name: `${user.firstName} ${user.lastName}`,
       role: invitationExists.role,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
-
     await saveActivityLogsNotification({
       agencyId: invitationExists?.agencyId,
       description: `Joined`,
@@ -158,9 +161,7 @@ export const verifyAndAcceptInvitation = async () => {
       })
 
       await db.invitation.delete({
-        where: {
-          email: userDetails.email,
-        },
+        where: { email: userDetails.email },
       })
 
       return userDetails.agencyId
@@ -421,6 +422,124 @@ export const deleteSubAccount = async (subaccountId: string) => {
   const response = await db.subAccount.delete({
     where: {
       id: subaccountId,
+    },
+  })
+  return response
+}
+
+export const deleteUser = async (userId: string) => {
+  await clerkClient.users.updateUserMetadata(userId, {
+    privateMetadata: {
+      role: undefined,
+    },
+  })
+  const deletedUser = await db.user.delete({ where: { id: userId } })
+
+  return deletedUser
+}
+
+export const getUser = async (id: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      id,
+    },
+  })
+
+  return user
+}
+
+export const canCreateInvitation = async (
+  email: string,
+  role: Role,
+  agencyId: string
+): Promise<boolean> => {
+  const existingUser = await db.user.findFirst({
+    where: {
+      OR: [
+        { email, role: 'AGENCY_OWNER', agencyId: null },
+        { email, role: { not: 'AGENCY_OWNER' }, agencyId },
+      ],
+    },
+  });
+
+  // Verifica se não existe um usuário com o mesmo e-mail e papel
+  return !existingUser;
+};
+
+
+export const sendInvitation = async (
+  role: Role,
+  email: string,
+  agencyId: string
+) => {
+  // Verifica se é possível criar um convite
+  const canCreate = await canCreateInvitation(email, role, agencyId);
+
+  if (!canCreate) {
+    // Aqui você pode decidir como lidar quando não pode criar um convite
+    console.log('Cannot create invitation. User already exists.');
+    return null;
+  }
+
+  // Cria o convite se for possível
+  const response = await db.invitation.create({
+    data: { email, agencyId, role },
+  });
+
+  try {
+    // Tente criar o convite na Clerk
+    const invitation = await clerkClient.invitations.createInvitation({
+      emailAddress: email,
+      redirectUrl: process.env.NEXT_PUBLIC_URL,
+      publicMetadata: {
+        throughInvitation: true,
+        role,
+      },
+    });
+
+    console.log("Invitation created successfully:", invitation);
+  } catch (error) {
+    console.log(error);
+    await db.invitation.delete({
+      where: {
+        email,
+        agencyId,
+      },
+    });
+    throw error;
+  }
+
+  return response;
+};
+
+export const getMedia = async (subaccountId:string) => {
+  const mediaFiles = await db.subAccount.findUnique({
+    where: {
+      id: subaccountId ,
+    },
+    include: {
+      Media: true
+    }
+  })
+  return mediaFiles
+}
+
+export const createMedia = async (subaccountId: string, mediaFile: CreateMediaType) => {
+  const response = await db.media.create({
+    data: {
+      link: mediaFile.link,
+      name: mediaFile.name,
+      subAccountId: subaccountId,
+    }
+  })
+  
+  return response
+}
+
+export const deleteMedia = async (mediaId: string) => {
+  const response = await db.media.delete({
+    where: {
+      id: mediaId,
     },
   })
   return response
