@@ -9,8 +9,11 @@ import {
   User,
 } from '@prisma/client'
 import {
+  _getTicketsWithAllRelations,
   getAuthUserDetails,
   getMedia,
+  getPipelineDetails,
+  getTicketsWithTags,
   getUserPermissions,
 } from './queries'
 import { db } from './db'
@@ -129,3 +132,11 @@ export type PricesList = Stripe.ApiList<Stripe.Price>
 export type UpsertFunnelPage = Prisma.FunnelPageCreateWithoutFunnelInput
 
 export type GetMediaFiles = Prisma.PromiseReturnType<typeof getMedia>
+
+export type TicketDetails = Prisma.PromiseReturnType<
+  typeof _getTicketsWithAllRelations
+>
+
+export type PipelineDetailsWithLanesCardsTagsTickets = Prisma.PromiseReturnType<typeof getPipelineDetails>
+
+export type TicketWithTags = Prisma.PromiseReturnType<typeof getTicketsWithTags>
