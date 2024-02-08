@@ -10,6 +10,11 @@
 
 - Ver o video e aplicar ideias na plataforma: 22 AI Business Ideas https://m.youtube.com/watch?v=I40JZGcfgtk
 
+- Ia para ajudar a fazer o produto e ia para ajudar na oferta, uma ia que te mentore na venda
+
+- Ver a questao se é possivel rodar nicho black com os gateways
+
+- Implementar portugues, ingles e espanhol
 
 
 - Bug: se coloco o email do dono da agencia em add team user, ele cria mesmo assim e vai pro model Invitation e isso quebra a aplicação

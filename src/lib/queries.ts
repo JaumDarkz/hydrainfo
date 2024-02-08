@@ -771,3 +771,13 @@ export const upsertTicket = async (
 
   return response
 }
+
+export const deleteTicket = async (ticketId: string) => {
+  const response = await db.ticket.delete({
+    where: {
+      id: ticketId,
+    }
+  })
+  
+  return response
+}
