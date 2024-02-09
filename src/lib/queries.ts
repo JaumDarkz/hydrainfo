@@ -285,7 +285,24 @@ export const getNotificationAndUser = async (agencyId: string) => {
 }
 
 export const upsertSubAccount = async (subAccount: SubAccount) => {
-  if (!subAccount.companyEmail) return null
+  if (!subAccount.companyEmail) return null;
+
+  // Verifica se o usuário possui um plano específico
+  const getSub = await getSubscriptionByAgency(subAccount.agencyId);
+  const isPro = getSub?.plan === 'price_1OhpSCJjzYL3OcBNfOeQQO1d';
+
+  // Verifica se o usuário sem plano já atingiu o limite de 3 subcontas
+  if (!isPro) {
+    const subAccountCount = await db.subAccount.count({
+      where: { agencyId: subAccount.agencyId },
+    });
+
+    if (subAccountCount >= 3) {
+      console.log('Error: User without plan reached the limit of 3 subaccounts');
+      return null;
+    }
+  }
+
   const agencyOwner = await db.user.findFirst({
     where: {
       Agency: {
@@ -293,76 +310,89 @@ export const upsertSubAccount = async (subAccount: SubAccount) => {
       },
       role: 'AGENCY_OWNER',
     },
-  })
-  if(!agencyOwner) return console.log('Error: could not create subaccount')
-  const permissionId = v4();
-const response = await db.subAccount.upsert({
-  where: { id: subAccount.id },
-  update: subAccount,
-  create: {
-    ...subAccount,
-    Permissions: {
-      create: {
-        access: true,
-        email: agencyOwner.email,
-        id: permissionId,
-      },
-      connect: {
-        subAccountId: subAccount.id,
-        id: permissionId
-      }
-    },
-    Pipeline: {
-      create: { name: 'Lead Cycle' }
-    },
-    SidebarOption: {
-      create: [
-        {
-          name: 'Launchpad',
-          icon: 'clipboardIcon',
-          link: `/subaccount/${subAccount.id}/launchpad`,
-        },
-        {
-          name: 'Settings',
-          icon: 'settings',
-          link: `/subaccount/${subAccount.id}/settings`,
-        },
-        {
-          name: 'Funnels',
-          icon: 'pipelines',
-          link: `/subaccount/${subAccount.id}/funnels`,
-        },
-        {
-          name: 'Media',
-          icon: 'database',
-          link: `/subaccount/${subAccount.id}/media`,
-        },
-        {
-          name: 'Automations',
-          icon: 'chip',
-          link: `/subaccount/${subAccount.id}/automations`,
-        },
-        {
-          name: 'Pipelines',
-          icon: 'flag',
-          link: `/subaccount/${subAccount.id}/pipelines`,
-        },
-        {
-          name: 'Contacts',
-          icon: 'person',
-          link: `/subaccount/${subAccount.id}/contacts`,
-        },
-        {
-          name: 'Dashboard',
-          icon: 'category',
-          link: `/subaccount/${subAccount.id}`,
-        },
-      ],
-    },
+  });
+
+  if (!agencyOwner) {
+    console.log('Error: Could not create subaccount');
+    return null;
   }
-})
-  return response 
-}
+
+  const permissionId = v4();
+
+  const response = await db.subAccount.upsert({
+    where: { id: subAccount.id },
+    update: subAccount,
+    create: {
+      ...subAccount,
+      Permissions: {
+        create: {
+          access: true,
+          email: agencyOwner.email,
+          id: permissionId,
+        },
+        connect: {
+          subAccountId: subAccount.id,
+          id: permissionId,
+        },
+      },
+      Pipeline: {
+        create: { name: 'Lead Cycle' }
+      },
+      SidebarOption: {
+        create: [
+          {
+            name: 'Launchpad',
+            icon: 'clipboardIcon',
+            link: `/subaccount/${subAccount.id}/launchpad`,
+          },
+          {
+            name: 'Settings',
+            icon: 'settings',
+            link: `/subaccount/${subAccount.id}/settings`,
+          },
+          {
+            name: 'Funnels',
+            icon: 'pipelines',
+            link: `/subaccount/${subAccount.id}/funnels`,
+          },
+          {
+            name: 'Media',
+            icon: 'database',
+            link: `/subaccount/${subAccount.id}/media`,
+          },
+          {
+            name: 'Automations',
+            icon: 'chip',
+            link: `/subaccount/${subAccount.id}/automations`,
+          },
+          {
+            name: 'Pipelines',
+            icon: 'flag',
+            link: `/subaccount/${subAccount.id}/pipelines`,
+          },
+          {
+            name: 'Contacts',
+            icon: 'person',
+            link: `/subaccount/${subAccount.id}/contacts`,
+          },
+          {
+            name: 'Dashboard',
+            icon: 'category',
+            link: `/subaccount/${subAccount.id}`,
+          },
+          {
+            name: 'Ai Tools',
+            icon: 'category',
+            link: `/subaccount/${subAccount.id}/aitools`,
+          },
+        ],
+      },
+    },
+  });
+
+  return response;
+};
+
 
 export const getUserPermissions = async (userId: string) => {
   const response = await db.user.findUnique({
@@ -781,3 +811,34 @@ export const deleteTicket = async (ticketId: string) => {
   
   return response
 }
+
+export const getSubscriptionByAgency = async (agencyId: string) => {
+  const response = await db.agency.findUnique({
+    where: {
+      id: agencyId,
+    },
+    select: {
+      Subscription: true,
+    },
+  });
+
+  return response?.Subscription || null;
+};
+
+export const getSubaccountButtonVer = async (agencyId: string): Promise<boolean> => {
+  const getSub = await getSubscriptionByAgency(agencyId);
+  const isPro = getSub?.plan === 'price_1OhpSCJjzYL3OcBNfOeQQO1d';
+
+  if (!isPro) {
+    const subAccountCount = await db.subAccount.count({
+      where: { agencyId: agencyId },
+    });
+
+    if (subAccountCount >= 3) {
+      console.log('Error: User without plan reached the limit of 3 subaccounts');
+      return true; // Retorna true se a contagem for igual ou maior a 3
+    }
+  }
+
+  return false; // Retorna false se a condição não for atendida
+};

@@ -16,6 +16,10 @@
 
 - Implementar portugues, ingles e espanhol
 
+- Implementar automações como o Zapier
+
+- Implementar IA no criador de websites
+
 
 - Bug: se coloco o email do dono da agencia em add team user, ele cria mesmo assim e vai pro model Invitation e isso quebra a aplicação
 resolvido criando uma querie para verificar antes de chamar o sendInvitation:

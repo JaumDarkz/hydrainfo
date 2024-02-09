@@ -29,8 +29,8 @@ import Wallet from '@/components/icons/wallet'
 import Warning from '@/components/icons/warning'
 export const pricingCards = [
   {
-    title: 'Starter',
-    description: 'Perfect for trying out plura',
+    title: 'Free',
+    description: 'Perfect for trying out Hydra Ecosystem.',
     price: 'Free',
     duration: '',
     highlight: 'Key features',
@@ -38,27 +38,18 @@ export const pricingCards = [
     priceId: '',
   },
   {
-    title: 'Unlimited Saas',
-    description: 'The ultimate agency kit',
-    price: '$199',
+    title: 'Hydra Pro',
+    description: 'Hydra Pro | For who wants to break limits!',
+    price: '$25',
     duration: 'month',
-    highlight: 'Key features',
-    features: ['Rebilling', '24/7 Support team'],
-    priceId: 'price_1OYxkqFj9oKEERu1KfJGWxgN',
-  },
-  {
-    title: 'Basic',
-    description: 'For serious agency owners',
-    price: '$49',
-    duration: 'month',
-    highlight: 'Everything in Starter, plus',
-    features: ['Unlimited Sub accounts', 'Unlimited Team members'],
-    priceId: 'price_1OYxkqFj9oKEERu1NbKUxXxN',
+    highlight: 'Unlimited access to all features!',
+    features: ['Unlimited Sub accounts', 'Unlimited Team members', 'AI Product Creation'],
+    priceId: 'price_1OhpSCJjzYL3OcBNfOeQQO1d',
   },
 ]
 
 export const addOnProducts = [
-  { title: 'Priority Support', id: 'prod_PNjJAE2EpP16pn' },
+  { title: 'Automations + Website Builder', id: 'prod_PWt86CuwwC0o0O' },
 ]
 
 export const icons = [

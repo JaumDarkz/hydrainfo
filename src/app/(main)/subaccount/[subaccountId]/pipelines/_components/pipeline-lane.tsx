@@ -1,5 +1,6 @@
 'use client'
 import CreateLaneForm from '@/components/forms/lane-form'
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,8 +33,6 @@ import React, { Dispatch, SetStateAction, useMemo } from 'react'
 import CustomModal from '@/components/global/custom-modal'
 import TicketForm from '@/components/forms/ticket-form'
 import PipelineTicket from './pipeline-ticket'
-
-// wip wire up tickets
 
 interface PipelaneLaneProps {
   setAllTickets: Dispatch<SetStateAction<TicketWithTags>>
@@ -188,7 +187,14 @@ const PipelineLane: React.FC<PipelaneLaneProps> = ({
                           className="mt-2"
                         >
                           {tickets.map((ticket, index) => (
-                            <div key={ticket.id}></div>
+                            <PipelineTicket
+                              allTickets={allTickets}
+                              setAllTickets={setAllTickets}
+                              subaccountId={subaccountId}
+                              ticket={ticket}
+                              key={ticket.id.toString()}
+                              index={index}
+                            />
                           ))}
                           {provided.placeholder}
                         </div>

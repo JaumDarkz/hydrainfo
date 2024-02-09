@@ -8,12 +8,13 @@ type Props = {
 
 const Pipelines = async ({ params }: Props) => {
   const pipelineExists = await db.pipeline.findFirst({
-    where: {
-      subAccountId: params.subaccountId
-    }
+    where: { subAccountId: params.subaccountId },
   })
 
-  if (pipelineExists) return redirect(`/subaccount/${params.subaccountId}/pipelines/${pipelineExists.id}`)
+  if (pipelineExists)
+    return redirect(
+      `/subaccount/${params.subaccountId}/pipelines/${pipelineExists.id}`
+    )
 
   try {
     const response = await db.pipeline.create({
@@ -24,12 +25,8 @@ const Pipelines = async ({ params }: Props) => {
       `/subaccount/${params.subaccountId}/pipelines/${response.id}`
     )
   } catch (error) {
-    console.log(error)
+    console.log()
   }
-
-  return (
-    <div>Pipelines</div>
-  )
 }
 
 export default Pipelines

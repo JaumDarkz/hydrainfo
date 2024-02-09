@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { deletePipeline, getSubaccountDetails, saveActivityLogsNotification } from '@/lib/queries'
+import { deletePipeline } from '@/lib/queries'
 import { toast } from '@/components/ui/use-toast'
 import { useRouter } from 'next/navigation'
 
@@ -31,12 +31,7 @@ const PipelineSettings = ({
   const router = useRouter()
   return (
     <AlertDialog>
-      <div className='flex flex-col gap-10'>
-        <CreatePipelineForm
-          subAccountId={subaccountId}
-          defaultData={pipelines.find((p) => p.id === pipelineId)}
-        />
-
+      <div>
         <div className="flex items-center justify-between mb-4">
           <AlertDialogTrigger asChild>
             <Button variant={'destructive'}>Delete Pipeline</Button>
@@ -55,12 +50,7 @@ const PipelineSettings = ({
                 onClick={async () => {
                   try {
                     await deletePipeline(pipelineId)
-                    const pipelineData = pipelines.find((p) => p.id === pipelineId)
-                    await saveActivityLogsNotification({
-                      agencyId: undefined,
-                      description: `Deleted Pipeline: | ${pipelineData?.name}`,
-                      subAccountId: subaccountId
-                    })
+                    //Challenge: Activity log
                     toast({
                       title: 'Deleted',
                       description: 'Pipeline is deleted',
@@ -80,6 +70,11 @@ const PipelineSettings = ({
             </AlertDialogFooter>
           </AlertDialogContent>
         </div>
+
+        <CreatePipelineForm
+          subAccountId={subaccountId}
+          defaultData={pipelines.find((p) => p.id === pipelineId)}
+        />
       </div>
     </AlertDialog>
   )

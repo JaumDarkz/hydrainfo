@@ -1,29 +1,63 @@
 import TicketForm from '@/components/forms/ticket-form'
 import CustomModal from '@/components/global/custom-modal'
 import TagComponent from '@/components/global/tag'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import LinkIcon from '@/components/icons/link'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card'
 import { toast } from '@/components/ui/use-toast'
 import { deleteTicket, saveActivityLogsNotification } from '@/lib/queries'
 import { TicketWithTags } from '@/lib/types'
 import { useModal } from '@/providers/modal-provider'
-import { Contact2, Edit, LinkIcon, MoreHorizontal, Trash, User2 } from 'lucide-react'
+import { Contact2, Edit, MoreHorizontalIcon, Trash, User2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { Dispatch, SetStateAction } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 type Props = {
-  setAllTickets: Dispatch<SetStateAction<TicketWithTags>>,
-  ticket: TicketWithTags[0],
-  subaccountId: string,
-  allTickets: TicketWithTags,
+  setAllTickets: Dispatch<SetStateAction<TicketWithTags>>
+  ticket: TicketWithTags[0]
+  subaccountId: string
+  allTickets: TicketWithTags
   index: number
 }
 
-const PipelineTicket = ({ allTickets, index, setAllTickets, subaccountId, ticket }: Props) => {
+const PipelineTicket = ({
+  allTickets,
+  index,
+  setAllTickets,
+  subaccountId,
+  ticket,
+}: Props) => {
   const router = useRouter()
   const { setOpen, data } = useModal()
 
@@ -40,8 +74,11 @@ const PipelineTicket = ({ allTickets, index, setAllTickets, subaccountId, ticket
 
   const handleClickEdit = async () => {
     setOpen(
-      <CustomModal title='Update Ticket Details' subheading=''>
-        <TicketForm 
+      <CustomModal
+        title="Update Ticket Details"
+        subheading=""
+      >
+        <TicketForm
           getNewTicket={editNewTicket}
           laneId={ticket.laneId}
           subaccountId={subaccountId}
@@ -51,16 +88,15 @@ const PipelineTicket = ({ allTickets, index, setAllTickets, subaccountId, ticket
         return { ticket: ticket }
       }
     )
-  } 
+  }
 
   const handleDeleteTicket = async () => {
     try {
       setAllTickets((tickets) => tickets.filter((t) => t.id !== ticket.id))
-
       const response = await deleteTicket(ticket.id)
       toast({
         title: 'Deleted',
-        description: 'Deleted ticket from lane.'
+        description: 'Deleted ticket from lane.',
       })
 
       await saveActivityLogsNotification({
@@ -73,75 +109,74 @@ const PipelineTicket = ({ allTickets, index, setAllTickets, subaccountId, ticket
     } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Oops!',
-        description: 'Could not delete the ticket'
+        title: 'Oppse!',
+        description: 'Could not delete the ticket.',
       })
       console.log(error)
     }
   }
-
   return (
-    <Draggable 
+    <Draggable
+      draggableId={ticket.id.toString()}
       index={index}
-      draggableId={ticket.id.toString()} 
     >
       {(provided, snapshot) => {
         if (snapshot.isDragging) {
           const offset = { x: 300, y: 20 }
-          // @ts-ignore
+          //@ts-ignore
           const x = provided.draggableProps.style?.left - offset.x
-          // @ts-ignore
+          //@ts-ignore
           const y = provided.draggableProps.style?.top - offset.y
-          // @ts-ignore
-          provided.draggableProps.style = { ...provided.draggableProps.style,
+          //@ts-ignore
+          provided.draggableProps.style = {
+            ...provided.draggableProps.style,
             top: y,
-            left: x
+            left: x,
           }
         }
-
         return (
-          <div 
+          <div
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
             <AlertDialog>
               <DropdownMenu>
-                <Card className='my-4 dark:bg-slate-900 bg-white shadow-none transition-all'>
-                  <CardHeader className='p-[12px]'>
-                    <CardTitle className='flex items-center justify-between'>
-                      <span className='text-lg w-full'>{ticket.name}</span>
-
+                <Card className="my-4 dark:bg-slate-900 bg-white shadow-none transition-all">
+                  <CardHeader className="p-[12px]">
+                    <CardTitle className="flex items-center justify-between">
+                      <span className="text-lg w-full">{ticket.name}</span>
                       <DropdownMenuTrigger>
-                        <MoreHorizontal className='text-muted-foreground' />
+                        <MoreHorizontalIcon className="text-muted-foreground" />
                       </DropdownMenuTrigger>
                     </CardTitle>
-                    <span className='text-muted-foreground text-xs'>
+                    <span className="text-muted-foreground text-xs">
                       {new Date().toLocaleDateString()}
                     </span>
-
-                    <div className='flex items-center flex-wrap gap-2'>
+                    <div className="flex items-center flex-wrap gap-2">
                       {ticket.Tags.map((tag) => (
                         <TagComponent
                           key={tag.id}
                           title={tag.name}
                           colorName={tag.color}
                         />
-                      ))
-                      }
+                      ))}
                     </div>
-                    <CardDescription className='w-full'>
+                    <CardDescription className="w-full ">
                       {ticket.description}
                     </CardDescription>
-
                     <HoverCard>
                       <HoverCardTrigger asChild>
-                        <div className='p-2 text-muted-foreground flex gap-2 hover:bg-muted transition-all rounded-lg cursor-pointer items-center'>
+                        <div className="p-2 text-muted-foreground flex gap-2 hover:bg-muted transition-all rounded-lg cursor-pointer items-center">
                           <LinkIcon />
+                          <span className="text-xs font-bold">CONTACT</span>
                         </div>
                       </HoverCardTrigger>
-                      <HoverCardContent side='right' className='w-fit'>
-                      <div className="flex justify-between space-x-4">
+                      <HoverCardContent
+                        side="right"
+                        className="w-fit"
+                      >
+                        <div className="flex justify-between space-x-4">
                           <Avatar>
                             <AvatarImage />
                             <AvatarFallback className="bg-primary">

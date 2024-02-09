@@ -18,7 +18,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
-import { getAuthUserDetails } from '@/lib/queries'
+import { getAuthUserDetails, getSubscriptionByAgency } from '@/lib/queries'
 import { SubAccount } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -26,15 +26,17 @@ import Link from 'next/link'
 import React from 'react'
 import DeleteButton from './_components/delete-button'
 import CreateSubaccountButton from './_components/create-subaccount-btn'
+import { db } from '@/lib/db'
 
 type Props = {
   params: { agencyId: string }
 }
 
 const AllSubaccountsPage = async ({ params }: Props) => {
+
   const user = await getAuthUserDetails()
   if (!user) return
-
+  
   return (
     <AlertDialog>
       <div className="flex flex-col ">

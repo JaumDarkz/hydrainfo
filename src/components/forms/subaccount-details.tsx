@@ -118,7 +118,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
       toast({
         variant: 'destructive',
         title: 'Oppse!',
-        description: 'Could not save sub account details.',
+        description: 'Could not save Sub Account Details.',
       })
     }
   }

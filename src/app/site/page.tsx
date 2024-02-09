@@ -10,7 +10,7 @@ export default async function Home() {
 
         <div className="bg-gradient-to-r from-primary to-secondary-foreground text-transparent bg-clip-text relative">
           <h1 className="text-9xl font-bold text-center md:text-[300px]">
-            OasiSaaS
+            Hydra
           </h1>
         </div>
 
