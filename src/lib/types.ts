@@ -11,6 +11,7 @@ import {
 import {
   _getTicketsWithAllRelations,
   getAuthUserDetails,
+  getFunnels,
   getMedia,
   getPipelineDetails,
   getTicketsWithTags,
@@ -140,3 +141,7 @@ export type TicketDetails = Prisma.PromiseReturnType<
 export type PipelineDetailsWithLanesCardsTagsTickets = Prisma.PromiseReturnType<typeof getPipelineDetails>
 
 export type TicketWithTags = Prisma.PromiseReturnType<typeof getTicketsWithTags>
+
+export type FunnelsForSubAccount = Prisma.PromiseReturnType<
+  typeof getFunnels
+>[0]
